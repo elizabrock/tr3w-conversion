@@ -1,0 +1,35 @@
+%!TEX encoding = UTF-8 Unicode
+\include{preamble}
+\include{commands}
+
+\title{
+    Your Book Title!\\
+    {\it }
+}
+\author{Your Name}
+\date{Month 20XX}
+
+\begin{document}	
+
+\maketitle
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\pagenumbering{arabic}
+
+% Uncomment these lines if you have a chapter of frontmatter
+% \frontmatter
+% \include{chapters/front_matter}
+
+\mainmatter
+% Add a \include{chapters/your_chapter_title} for each chapter in your book
+\include{chapters/example_chapter}
+
+% Uncomment these lines if you have appendices 
+% \appendix
+% \include{chapters/appendix_a}
+% \include{chapters/appendix_b}
+
+\end{document}

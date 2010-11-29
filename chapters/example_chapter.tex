@@ -1,0 +1,97 @@
+
+
+\chapter{Rails Environments and Configuration}
+\begin{quote}
+[Rails] gained a lot of its focus and appeal because I didn't try to
+please people who didn't share my problems. Differentiating between
+production and development was a very real problem for me, so I solved
+it the best way I knew how.
+
+--David Heinemeier Hansson
+\end{quote}
+Rails applications are preconfigured with three standard modes of
+operation: development, test, and production. These modes are basically
+execution environments and have a collection of associated settings
+that determine things such as which database to connect to, and whether
+or not the classes of your application are reloaded with each request.
+It is also simple to create your own custom environments if necessary.
+
+The current environment is always specified in the environment
+variable \verb|RAILS_ENV|, which names the desired mode of operation
+and corresponds to an environment definition file in the
+\verb|config/environments| folder. Since the environment settings
+govern some of the most fundamental aspects of Rails, such as
+classloading, in order to really understand the Rails way you should
+really understand its environment settings.
+
+In this chapter, we get familiar with how Rails starts up and handles
+requests, by examining scripts such as \verb|boot.rb| and
+\verb|application.rb| and the settings that make up the three standard
+environment settings (modes). We also cover some of the basics of
+defining your own environments, and why you might choose to do so.
+
+\section{Startup and Application Settings}
+Whenever you start a process to handle requests with Rails (such as
+with \verb|rails |\verb|server), one of the first things that happens
+is that config/|\verb|boot|\verb|.rb is loaded.|
+
+Processes require different components depending on what they need.
+Some processes need the whole Rails environment, so they require
+\verb|config/environment.rb|\verb|, you can see an example of that at
+the top of files such as |\verb|spec|\verb|/|\verb|spec|\verb|_helper.rb.|
+
+\subsection{application.rb}
+The file \verb|environment.rb| used to be where many of your
+application settings lived. In Rails 3, the settings move to a file
+called \verb|application.rb|, and it's the only file required at the
+top of \verb|environment.rb|.
+
+Let's go step by step through the settings provided in the default
+\verb|application.rb| file that you'll find in a newly created Rails
+application. By the way, as you're reading through the following
+sections, make a mental note to yourself that changes to these files
+require a server restart to take effect.
+
+\subsection{boot.rb}
+The next lines of \verb|application.rb| are where the wheels really
+start turning, once \verb|config/boot.rb| is loaded:
+
+\begin{code}
+\begin{Verbatim}
+require File.expand_path('../boot', __FILE__)
+\end{Verbatim}
+\end{code}
+Note that the boot script is generated as part of your Rails
+application, but you won't usually need to edit it. It takes care of a
+two essential steps in starting up the environment:
+
+\begin{itemize}
+\item Require gems required by Rails and your application according to its
+Bundler configuration
+
+\item Require the Rails component frameworks.
+
+\end{itemize}
+Usually, the following line (default) will suffice:
+
+\begin{code}
+\begin{Verbatim}
+require 'rails/all'
+\end{Verbatim}
+\end{code}
+However, a new feature of Rails 3 is the ability to easily cherry-pick
+only the components needed by your application.
+
+\begin{code}
+\begin{Verbatim}
+# To pick the frameworks you want, remove 'require "rails/all"'
+# and list the framework railties that you want:
+#
+# require "active_model/railtie"
+# require "active_record/railtie"
+# require "action_controller/railtie"
+# require "action_view/railtie"
+# require "action_mailer/railtie"
+# require "active_resource/railtie"
+\end{Verbatim}
+\end{code}
